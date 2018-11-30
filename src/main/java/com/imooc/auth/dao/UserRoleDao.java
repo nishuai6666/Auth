@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.imooc.auth.common.BaseDao;
@@ -29,10 +30,20 @@ public class UserRoleDao extends BaseDao {
 		return jdbcTemplate.query(sql, new Object[]{(page-1)*size,size},new UserRoleMapper());
 	}
 
-	public UserRole findUserRoleByUserId(Long userId){
-		String sql="select * from auth_user_role where user_id =?";
-		return jdbcTemplate.queryForObject(sql, new Object[]{userId}, new UserRoleMapper());
-	}
+	/**
+     * 根据userId查询用户角色
+     * @param userId
+     * @return
+     */
+    public List<UserRole> findUserRoleByUserId(Long userId){
+        String sql="select * from auth_user_role where user_id =?";
+        try {
+            return jdbcTemplate.query(sql,new Object[]{userId},new UserRoleMapper());
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 	
 	public void saveUserRoles(Collection<UserRole> userRole){
 		String sql="insert into auth_user_role(user_id,role_id) values (?,?)";

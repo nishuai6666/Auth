@@ -3,6 +3,7 @@ package com.imooc.auth.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -32,9 +33,18 @@ public class UserDao extends BaseDao {
 	 * @return 查询到的唯一用户实体
 	 */
 	public User findUser(String name, String pwd){
-		String sql="select * from auth_user where name=?and pwd=?";
+		String sql="select * from auth_user where name=? and pwd=?";
 		try{
 			return jdbcTemplate.queryForObject(sql,new Object[]{name,pwd}, new UserMapper());
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public List<User> findUsers(int page, int size){
+		String sql="select * from auth_user limit ?,?";
+		try{
+			return jdbcTemplate.query(sql,new Object[]{page,size}, new UserMapper());
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
@@ -62,7 +72,7 @@ public class UserDao extends BaseDao {
 		return jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserMapper());
 	}
 	
-	public Collection<User> findByIds(Collection<Long> ids){
+	public List<User> findByIds(Collection<Long> ids){
 		StringBuilder sql= new StringBuilder( "select * from auth_user where id in(");
 		Object[] args = new Object[ids.size()];
 		//处理多线程并发是出现的变量

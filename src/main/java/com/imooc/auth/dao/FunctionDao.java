@@ -99,7 +99,7 @@ public class FunctionDao extends BaseDao {
      * 查询全部功能
      * @return 返回功能链表
      */
-    public List<Function> findALlFunctions(){
+    public List<Function> findALLFunctions(){
         String sql="select * from auth_function";
         try {
             return jdbcTemplate.query(sql,new FunctionsRowMapper());
