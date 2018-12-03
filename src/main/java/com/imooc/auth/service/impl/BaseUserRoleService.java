@@ -39,40 +39,16 @@ public interface BaseUserRoleService {
 	List<Role> getRole(int page,int size);
 	
 	
-	
-	/**
-	 * 查询所有用户（分页）
-	 * @param page,size
-	 */
-	Collection<User> getUsers(int page,int size);
-	
-	
 	/**
 	 * 查询所有用户（ID集合）
 	 * @param page,size
 	 */
-	Collection<User> getUsers(Collection<Long> ids);
-	
-	
-	/**
-	 * 查询用户角色关系对应（分页）
-	 * @param page,size
-	 */
-	List<UserRole> getUserRoles(int page,int size);
-	
+	List<Role> getUsers(Collection<Long> ids);
 	
 	/**
 	 * 查询用户角色对应关系
 	 * @param userId
 	 */
-	List<UserRole> getUserRolesByUserId(Long userId);
-	
-	/**
-	 * 保存用户角色对应关系
-	 * @param userId,roleIds[]
-	 */
-	void addUserRoles(Long userId, Long[] roleIds);
-	
-	
+	List<RoleFunction> getRoleFunction(Long userId);	
 	
 }

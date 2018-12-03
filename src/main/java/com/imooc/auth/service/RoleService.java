@@ -22,14 +22,23 @@ public class RoleService implements BaseUserRoleService {
 	@Autowired
 	private RoleFunctionDao roleFunctionDao;
 	
-	
+	/**
+	 * 保存角色信息,同时保存角色对应的功能
+	 * @param role 角色
+	 * @param roleFunction 角色对应的功能（即角色功能的关联关系）
+	 */
 	@Override
 	public void addRole(Role role, Collection<RoleFunction> roleFunction) {
 		roleDao.saveRole(role);
 		roleFunction.forEach((rf) -> rf.setRoleId(role.getId()));
 		roleFunctionDao.saveRoleFunctions(roleFunction);
 	}
-
+	
+	/**
+	 * 编辑角色信息,同时保存角色对应的功能
+	 * @param role 角色
+	 * @param roleFunction 角色对应的功能（即角色功能的关联关系）
+	 */
 	@Override
 	public void eidtRole(Role role, Collection<RoleFunction> roleFunction) {
 		roleDao.updateRole(role);
@@ -37,12 +46,23 @@ public class RoleService implements BaseUserRoleService {
 		roleFunction.forEach((rf) ->rf.setRoleId(role.getId()));
 		roleFunctionDao.saveRoleFunctions(roleFunction);
 	}
-
+	
+	/**
+	 * 删除角色信息
+	 * @param roleId
+	 */
 	@Override
 	public void deleteRole(Long roleId) {
 		roleDao.deleteRoleById(roleId);
+		roleFunctionDao.deleteByRoleId(roleId);
 	}
-
+	
+	/**
+	 * 分页查询角色信息
+	 * @param page 当前页码
+	 * @param size 每页信息条数
+	 * @return 角色集合
+	 */
 	@Override
 	public List<Role> getRole(int page, int size) {
 		List<Role> roles = roleDao.findRolesByPages(page, size);
@@ -60,35 +80,25 @@ public class RoleService implements BaseUserRoleService {
 
 		return roles;
 	}
-
+	
+	/**
+	 * 根据ID集合查询角色信息
+	 * @param ids 角色ID集合
+	 * @return 角色集合
+	 */
 	@Override
-	public Collection<User> getUsers(int page, int size) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Role> getUsers(Collection<Long> ids) {
+		return roleDao.findRoleByIds(ids);
 	}
-
+	
+	/**
+	 * 根据用户ID查询角色功能对应关系
+	 * @param roleId 角色ID
+	 * @return 角色功能对应关系
+	 */
 	@Override
-	public Collection<User> getUsers(Collection<Long> ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<UserRole> getUserRoles(int page, int size) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<UserRole> getUserRolesByUserId(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addUserRoles(Long userId, Long[] roleIds) {
-		// TODO Auto-generated method stub
-		
+	public List<RoleFunction> getRoleFunction(Long roleId) {
+		return roleFunctionDao.findRoleFunctionByRoleId(roleId);
 	}
 
 }
