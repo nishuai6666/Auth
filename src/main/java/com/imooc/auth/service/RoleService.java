@@ -87,7 +87,7 @@ public class RoleService implements BaseUserRoleService {
 	 * @return 角色集合
 	 */
 	@Override
-	public List<Role> getUsers(Collection<Long> ids) {
+	public List<Role> getRoles(Collection<Long> ids) {
 		return roleDao.findRoleByIds(ids);
 	}
 	
